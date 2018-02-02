@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试入口</title>
+
+
+    <link rel="stylesheet" href="common.css">
+    <script src="iptv.core-1.0.0.js"></script>
+    <script src="iptv.config.js"></script>
+    <script src="iptv.api.js"></script>
+    <script src="iptv.key-1.0.0.js"></script>
+
+</head>
+<body>
+<h1 id="h" class=" aa ss ">测试iptv js </h1><br/>
+<div id="hands_x12_y11_one_"
+     style="width:100px; height: 100px; border: 1px solid red; position:absolute;top:100px;left: 100px;">
+    <img src="empty.png" id="one"/>
+</div>
+
+<div id="hands_x12_y11_two_"
+     style="width:100px; height: 100px; border: 1px solid red; position:absolute;top:100px;left: 300px;">
+    <img src="empty.png" id="two"/>
+</div>
+<a href="" id="a">进入百度</a>
+<script type="text/javascript">
+    $(function () {
+
+        
+        
+        $( {
+            id: 'hands_x12_y11_one_',
+            name: 'one',
+            clickEvent: function () {
+                page.showName();
+            },
+            onFocusEvent:"javascript:show()",
+            focusType: 14,
+            left: '',
+            right: 'hands_x12_y11_two_',
+            up: '',
+            down: ''
+        }).addFocus();
+        
+        $({
+            id: 'hands_x12_y11_two_',
+            name: 'two',
+            clickEvent: function () {
+                page.showName();
+            },
+            onFocusEvent:"javascript:show()",
+            focusType: 14,
+            left: 'hands_x12_y11_one_',
+            right: '',
+            up: '',
+            down: ''
+        }).addFocus();
+        iptv("#hands_x12_y11_one_").onFocus().attr("backgroundColor","red");
+        function Page(name_) {
+            this.name=name_;
+        }
+        Page.prototype.showName = function () {
+            console.log(this.name);
+        };
+
+        var page = new Page('测试Name');
+
+
+    });
+    function show() {
+       
+    }
+    
+    function clickObj() {
+        
+    }
+    
+    
+    
+    
+    
+    
+
+</script>
+</body>
+</html>

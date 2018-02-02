@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        html {
+            font-size: 100px;
+        }
+
+        * {
+            outline: none;
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            text-align: center;
+            font-size: 0.28rem;
+            line-height: 1.4;
+            color: #fff;
+            font-family: STHeiti-Light, 'Hiragino Sans GB', 'Microsoft Yahei', Arial;
+            background: #010511;
+            overflow-x: hidden;
+            margin: 0 auto !important;
+        }
+
+        body.bg1 {
+            background: url(images/bg.jpg) center no-repeat, #010511;
+            background-size: cover;
+        }
+
+        body, ul, li, dl, dd, dt, p, h1, h2, h3 {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        /*弹出层*/
+        .cover {
+            position: fixed;
+            z-index: 10;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #000;
+            opacity: .6;
+            display: none;
+        }
+
+        .mTit1 {
+            font-size: .34rem;
+            margin: 1rem .9rem .4rem;
+        }
+
+        .hr1 {
+            height: 1px;
+            background: -webkit-linear-gradient(0, rgba(0, 181, 191, 0) 0%, rgba(0, 181, 191, 1) 4%, rgba(0, 181, 191, 1) 96%, rgba(0, 181, 191, 0) 100%);
+            position: relative;
+        }
+
+        .swiperDesc {
+            color: #00defe;
+            margin-top: .4rem;
+            font-size: .34rem;
+        }
+
+        .disN {
+            display: none;
+        }
+
+        .yellow2 {
+            color: #fdff3a;
+        }
+
+        .swiper-container {
+            width: 100%;
+            height: 4.86rem;
+            margin: .9rem 0 0;
+        }
+
+        /*控制所有面板的样式*/
+        .swiper-slide {
+            text-align: center;
+            font-size: .4rem;
+            background: rgba(10, 26, 59, .2);
+            line-height: 2.8;
+            padding: .7rem 0;
+            box-sizing: border-box;
+            height: 4rem !important;
+            margin: .46rem 0;
+            outline: .03rem solid #016c7c;
+        }
+
+        .swiper-slide i {
+            font-size: 0.18rem;
+            font-style: normal;
+            text-align: left;
+            line-height: .5rem;
+            color: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            width: .8rem;
+            height: .8rem;
+            padding: 0 0 0 .1rem;
+            overflow: hidden;
+        }
+
+        .swiper-slide i:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -0.8rem;
+            width: 0;
+            height: 0;
+            border: 0.8rem solid transparent;
+            border-top-color: red;
+            z-index: -1;
+        }
+
+        .swiper-slide em {
+            display: none;
+        }
+
+        /*控制被选中的面板的样式*/
+        .swiper-slide-active {
+            height: 4.4rem !important;
+            box-shadow: 0 0 .2rem .08rem rgba(0, 222, 255, .75);
+            margin: .26rem 0;
+            outline-color: #00dcff;
+        }
+        
+        
+        /*提示层*/
+        .xx4_pop {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 90%;
+            max-width: 7.2rem;
+            -webkit-transform: translate(-50%, -50%);
+            z-index: 3000;
+            background: #091d35;
+            border: .03rem solid #00cae8;
+            color: #fff;
+            text-align: center;
+            border-radius: .1rem;
+            font-size: .28rem;
+            display: none;
+        }
+        .xx4_pop_tit{ color:#6ba612; line-height:45px; font-size:20px; padding-left:20px; position:relative; }
+        .xx4_pop_cont{margin:; padding:.2rem; font-size:.24rem; border:0px solid #fff; }
+        .xx4_pop_cont>div{text-align:left; display:inline-block; }
+        .mtb20{ display:block; margin:0.4rem 0; }
+        .pb20{ padding-bottom:0.4rem; }
+        .pt10{ padding-top:0.2rem; }
+        .fs36rem{font-size:.36rem !important;}
+        .mt10{ margin-top:0.2rem !important; }
+        .mb5{ margin-bottom:0.1rem !important; }
+        .btnT1{ display:inline-block; min-width:1.4rem; line-height:1; overflow:; padding:.6em 1.4em; font-size:.28rem; color:#fff; border:2px solid #00cae8; background:#0a1726 /*url(images/btn1.png) center/100% 100% no-repeat*/; border-radius:.1rem; text-align:center; font-weight:bold; position:relative; -webkit-appearance:none; z-index:1; /*box-shadow:0 2px 5px 0 rgba(0,0,0,.3), 0 -2px 2px 0 rgba(0,0,0,.3) inset;*/ font-family:; /*text-shadow:.02rem .02rem .02rem rgba(38,123,178,.7);*/ margin:0 .1rem; }
+
+
+
+    </style>
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <script src="../iptv.core-1.0.0.js"></script>
+    <script src="../iptv.key-1.0.0.js"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/swiper.min.js"></script>
+</head>
+<body class="bg1">
+<div id="hands_x0_y0_one_"
+     style="width:1px; height: 1px; position:absolute;top:100px;left: 100px; display: none;">
+    <img src="../empty.png" id="one"/>
+</div>
+<div id="hands_x0_y0_two_"
+     style="width:1px; height: 1px; position:absolute;top:100px;left: 100px; display: none;">
+    <img src="../empty.png" id="two"/>
+</div>
+<div class="">
+    <p class="mTit1">简介：0001</p>
+    <p class="hr1"></p>
+
+    <div class="swiper-container swiper-container-horizontal">
+        <div class="swiper-wrapper" style="transform: translate3d(318.182px, 0px, 0px); transition-duration: 0ms;">
+
+
+            <div class="swiper-slide " buytype="test1" style="width: 374.545px; margin-right: 80px;">
+                <i>最热</i>测试产品1<em>测试产品1</em>
+                <p><span class="yellow2">15.0</span>元</p>
+            </div>
+
+            <div class="swiper-slide " buytype="test2" style="width: 374.545px; margin-right: 80px;">
+                测试产品2包月 <em>测试产品2包月</em>
+                <p><span class="yellow2">16.0</span>元</p>
+            </div>
+
+            <div class="swiper-slide " buytype="test3" style="width: 374.545px; margin-right: 80px;">
+                测试产品3包年<em>测试产品3包年</em>
+                <p><span class="yellow2">17.0</span>元</p>
+            </div>
+
+        </div>
+        <div class=" swiper-pagination swiper-pagination-clickable swiper-pagination-bullets">
+
+        </div>
+        <!--<div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>-->
+    </div>
+    <p class="swiperDesc js-swiperDesc"></p>
+    <footer>
+        <p>温馨提示：如有疑问可拨打免费客服电话热线10086 <span class="fr">按遥控器【返回】键返回上一级</span></p>
+    </footer>
+</div>
+
+<!--遮罩层-->
+<div class="cover"></div>
+<!--提示层-->
+<div id="tip" class="xx4_pop">
+    <div class="xx4_pop_cont">
+        <p class="mtb20 pb20 pt10 fs36rem">获取验证码失败！</p>
+    </div>
+    <p class="pb10 mt10 mb5">
+        <span  class="btnT1" >确定</span>
+    </p>
+</div>
+<script type="text/javascript">
+
+
+    var swiper = new Swiper('.swiper-container', {
+        //分页器，就是下面有一个几个小点
+        pagination: '.swiper-pagination',
+        //允许当前页面同时显示几个面板
+        slidesPerView: 4.4,
+        //设置为true时，点击分页器的指示点分页器会控制Swiper切换。
+        paginationClickable: true,
+        //面板之间的距离
+        spaceBetween: 80,
+        //初始化默认落在哪个slide面板上
+        initialSlide: 1,
+        //设置面板居中
+        centeredSlides: true,
+        //键盘方向键控制
+        keyboardControl: false,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        //只有滑动到另一个slide才会执行，如果只是在当前slide滑动，但是没有成功滑动到另一个，就不会执行
+        //swiper从当前slide开始过渡到另一个slide时执行
+        //过度之前调用
+        //使用分页组件切换，开始点击分页组件就立即执行该方法
+        //使用手势滑动，只有手离开屏幕时才立即执行
+        onSlideChangeStart: function (swiper) {
+            var txt = $(swiper.wrapper[0]).children().eq(swiper.activeIndex).children("em").html();
+            $(".js-swiperDesc").html(txt ? txt : "");
+        }
+    });
+
+    $(document).ready(function () {
+        var txt = $(swiper.wrapper[0]).children().eq(swiper.activeIndex).children("em").html();
+        $(".js-swiperDesc").html(txt ? txt : "");
+
+        iptv({
+            id: 'hands_x0_y0_two_',
+            name: '关闭遮罩层焦点',
+            clickEvent: function () {
+                $(".cover").hide();
+                $(".xx4_pop").hide();
+                iptv.key.changeFocus("hands_x0_y0_one_");
+            },
+            focusType: 7,
+        }).addFocus();
+        
+        iptv({
+            id: 'hands_x0_y0_one_',
+            name: '控制面板焦点',
+            clickEvent: function () {
+                console.log("clickEvent");
+                $(".cover").show();
+                $(".xx4_pop").show();
+                iptv.key.changeFocus("hands_x0_y0_two_");
+            },
+            focusType: 7,
+            leftEvent: function () {
+                console.log("leftEvent");
+                swiper.slidePrev(true, 3000);//设置true  将回调onSlideChangeStart
+            },
+            rightEvent: function () {
+                console.log("rightEvent");
+                swiper.slideNext(true, 3000);//设置true  将回调onSlideChangeStart
+            }
+        }).addFocus().onFocus();
+    });
+
+
+    $(".swiper-slide").click(function (e) {
+
+    });
+
+
+    //控制字体
+    var win = window, doc = document;
+    function setFontSize() {
+        var winWidth = document.body.clientWidth;
+        var size = (winWidth / 960) * 50;
+        doc.documentElement.style.fontSize = size + "px";
+    };
+    setFontSize();
+    window.onresize = setFontSize;
+
+
+</script>
+</body>
+</html>

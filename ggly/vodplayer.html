@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="page-view-size" content="1280*720" />
+    <title>............</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+
+<body style="background-color:transparent;">
+    <div class="wrapper">
+        <div class="playLayer">
+            <!--...............-->
+            <div class="btn-r-operate">
+                <img id="mutePic" src="images/t.gif" />
+            </div>
+            <!--..................-->
+            <div class="btn-mid-operate"></div>
+            <!--...............-->
+            <div id="playBoxDiv" class="playBox04" style="display: none;">
+                <div class="playContent">
+                    <div id="fwfrDiv" style="display: none;">
+                        <div id="speedindex" style="position:absolute;left:85px;top:81px">X2</div>
+                        <div id="ffBotton" class="btn-operate" style="left:35px"></div>
+                        <div id="playtime" class="txt txt-time" style="left:90px;"></div>
+                        <!--txt-time ...left............80px; ............1010px;
+                        left=80px+point(left)+10px;
+                    -->
+                        <div id="progressBarDiv" class="progress-bar"></div>
+                        <div id="endtime" class="txt txt-time" style="left:1085px; top:72px;"></div>
+                        <div id="txtTitlef" class="txt txt-title" style="top: 5px;"></div>
+                    </div>
+                    <div id="pauseDiv" style="display: none;">
+                        <div class="btn-operate">
+                            <!--<img src="../images/btn-s-fastForward.png" alt="......" />-->
+                            <!--<img src="../images/btn-s-rewind.png" alt="......" />-->
+                            <img src="images/btn-s-pause.png" alt="......" />
+                        </div>
+                        <div id="playtimep" class="txt txt-time" style="left:90px;"></div>
+                        <div id="progressBarDivp" class="progress-bar"></div>
+                        <div id="endtimep" class="txt txt-time" style="left:1085px; top:72px;"></div>
+                        <div id="txtTitlep" class="txt txt-title" style="top: 5px;"></div>
+                        <!--......-->
+                        <div class="play-jump">
+                            <!--.........
+                                 class="item item_focus"
+                        -->
+                            <div class="txt txt01">.....................</div>
+                            <div id="box1_0" class="item" style="left:180px;">
+                                <div id="box1_txt0" class="txt txtInput"></div>
+                            </div>
+                            <div class="txt txt02" style="left:271px;">...</div>
+                            <div id="box1_1" class="item" style="left:299px;">
+                                <div id="box1_txt1" class="txt txtInput"></div>
+                            </div>
+                            <div class="txt txt02" style="left:390px;">...</div>
+                            <div id="box1_2" class="item" style="left:457px;">
+                                <div class="txt">......</div>
+                            </div>
+                            <div id="box1_3" class="item" style="left:547px;">
+                                <div class="txt">......</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--...............-->
+            <div id="voiceDiv" class="playBox03" style="display: none;">
+                <div class="btn" style="left:25px; top:7px;"><img src="images/btn-s-voice.png" alt="......" /></div>
+                <div class="progress-bar-voice">
+                    <!--
+                    bar............740px;
+                    point............710px;
+                -->
+                    <div id="processBar" class="bar" style="width:0px;"></div>
+                    <div id="processPoint" class="point" style="left:0px;">
+                        <!--.........
+                             class="item item_focus"
+                    -->
+                        <div class="item item_focus"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- S popup -->
+        <div id="playEndDiv" class="popup01" style="display: none;">
+            <div class="txt-content">
+                <div class="txt txt02">............</div>
+                <div id="txtMitNum" class="txt txt03">5..................</div>
+            </div>
+        </div>
+        <!-- E popup -->
+        <!-- S popup -->
+        <div id="popupReturnDiv" class="popup01" style="display: none;">
+            <div class="txt-content">
+                <div id="txtTitler" class="txt txt01"></div>
+            </div>
+            <div class="btn btn-skin01">
+                <!--.........
+                    class="item item_focus"
+            -->
+                <div id="box2_0" class="txtbg01 item item_focus" style="top:10px; left:45px;">
+                    <div class="txt txtSty01">............</div>
+                </div>
+                <div id="box2_1" class="txtbg01 item" style="top:104px; left:45px;">
+                    <div class="txt txtSty01">............</div>
+                </div>
+            </div>
+        </div>
+        <!-- E popup -->
+    </div>
+    <iframe name="smallscreen" id="smallscreen" width="0" height="0"></iframe>
+</body>
+
+<script type="text/javascript">
+/**
+ * mediaPlayer
+ * @type {String}
+ */
+var strVAStoEPG = 'http://180.100.160.139:33200/EPG/jsp/frame224/en/third_to_epg.jsp';
+var progName = getQueryString("name") === null ? "" : unescape(getQueryString("name"));
+var backURL = getQueryString("backURL") === null ? "../index.jsp" : getQueryString("backURL");
+var playCode = getQueryString("playCode");
+var mp = new MediaPlayer();
+var pageType = "blank"; //......blank,forwardRewind,pause,playEnd,popupReturn,voice
+var isControl = false; //........................
+
+var playEndDivIsShow = false; //playEndDiv............
+var pauseDivIsShow = false; //pauseDiv............
+var voiceDivIsShow = false; //voiceDiv............
+var popupReturnDivIsShow = false; //........................
+var fwfrDivIsShow = false; //..............................
+/**
+ * ff
+ * @return {[type]} [description]
+ */
+var trickmode = "play"; //........................fastforward,fastrewind,play
+var playtime = 0; //..................
+var endtime = 0; //........................
+var speedindex = 2; //.................................
+var pointlength = 920; //..................
+var time_process = null; //.........
+var time_processG = null; //............
+var barpercent = 0; //...................................................playtime / endtime * pointlength
+/**
+ * pause
+ * @return {[type]} [description]
+ */
+var box0Doms = []; //........................
+var box1Doms = []; //........................
+var barcount = 0; //parseInt(endtime / 60, 10);..................
+var timeList = []; //........................
+var currentBarIndex = 0; //.................................
+var curBoxId = 0; //......boxid
+var curBoxIndex = 0; //......indexid
+/**
+ * playEnd
+ */
+var mitNum = 5; //..........................................
+/**
+ * voice
+ * @return {[type]} [description]
+ */
+var perVolume = 5; //..............................
+var nowVolume = 0; //............
+var totalVolume = 100; //............
+var pointlengthv = 710; //.....................
+
+window.onload = function() {
+    mp.bindNativePlayerInstance(0);
+    smallWindowPlay(playCode);
+    initMuteIcon();
+    setTimeout(setPressOk, 1000);
+};
+
+window.onunload = function() {
+    destoryMP();
+};
+
+function destoryMP() {
+    var instanceId = mp.getNativePlayerInstanceID();
+    mp.stop();
+    mp.releaseMediaPlayer(instanceId);
+}
+
+function setPressOk() {
+    isControl = true;
+}
+
+function goBack() {
+    destoryMP();
+    window.location = backURL;
+}
+
+function initMuteIcon() {
+    var muteFlag = mp.getMuteFlag();
+    if (muteFlag == 1) {
+        $("mutePic").src = "images/btn-voice-disable.png";
+    }
+}
+
+function smallWindowPlay(playCode) {
+    if (!!playCode && playCode !== "") {
+        var n = new Date();
+        var nowTime = "";
+        nowTime += n.getFullYear() + ":";
+        nowTime += completionZero((n.getMonth() + 1) + "", "00") + ":";
+        nowTime += completionZero(n.getDate() + "", "00") + ":";
+        nowTime += completionZero(n.getHours() + "", "00") + ":";
+        nowTime += completionZero(n.getMinutes() + "", "00") + ":";
+        nowTime += completionZero(n.getSeconds() + "", "00");
+
+        var vas_info = "";
+        vas_info += "<play_action>vod</play_action>";
+        vas_info += "<play_id>" + playCode + "</play_id>";
+        vas_info += "<play_time>" + nowTime + "</play_time>";
+        vas_info += "<play_mode>small</play_mode>";
+        vas_info += "<play_area>0:0:1280:720</play_area>";
+        vas_info += "<back_vas_url></back_vas_url>";
+        vas_info += "<back_vas_url_par></back_vas_url_par>";
+        vas_info += "<add_info></add_info>";
+        $("smallscreen").src = strVAStoEPG + (strVAStoEPG.indexOf("?") >= 0 ? "&" : "?") + "THIRD_INFO=" + escape(vas_info);
+    }
+}
+
+/**
+ * ...............
+ * @return {[type]} [description]
+ */
+function initParam() {
+    pageType = "blank";
+    trickmode = "play";
+    speedindex = 2;
+    curBoxId = 0;
+    curBoxIndex = 0;
+    $("speedindex").innerHTML = 'X2';
+    $("box1_0").className = "item";
+    $("box1_1").className = "item";
+    $("box1_2").className = "item";
+    $("box1_3").className = "item";
+    $("box1_txt0").innerHTML = "";
+    $("box1_txt1").innerHTML = "";
+    $('box2_0').className = 'txtbg01 item item_focus';
+    $('box2_1').className = 'txtbg01 item';
+}
+
+function showFastforwardFastrewind(tempMode) {
+    pageType = "forwardRewind";
+    showffDiv();
+    trickmode = tempMode;
+    if (trickmode == 'fastforward') {
+        $("ffBotton").innerHTML = '<img src="images/btn-s-fastForward.png" alt="......" />';
+        mp.fastForward(speedindex);
+    }
+    if (trickmode == 'fastrewind') {
+        $("ffBotton").innerHTML = '<img src="images/btn-s-rewind.png" alt="......" />';
+        mp.fastRewind(-speedindex);
+    }
+    if (progName) {
+        $('txtTitlef').innerHTML = '...............' + getCutedStr(progName, 56, true);
+    }
+    playtime = mp.getCurrentPlayTime();
+    endtime = mp.getMediaDuration();
+    $('playtime').innerHTML = convertTime(playtime);
+    $('endtime').innerHTML = convertTime(endtime);
+    barpercent = Math.floor(playtime / endtime * pointlength);
+    $("playtime").style.left = (barpercent + 90) + "px";
+    $("progressBarDiv").innerHTML = '<div class="bar" style="width:' + (barpercent + 30) + 'px;"></div><div class="point" style="left:' + barpercent + 'px;"><div id="box0_0" class="item item_focus"></div></div>';
+    time_process = setTimeout(process, 1000);
+}
+
+function showPause() {
+    pageType = "pause";
+    showPauseDiv();
+    curBoxId = 0;
+    curBoxIndex = 0;
+    mp.pause();
+    for (var i = 0; i < 4; ++i) {
+        box1Doms[i] = $('box1_' + i);
+    }
+
+    box0Doms[0].className = 'item item_focus';
+    if (progName) {
+        $('txtTitlep').innerHTML = '...............' + getCutedStr(progName, 56, true);
+    }
+
+    //.................................
+    playtime = mp.getCurrentPlayTime();
+    endtime = mp.getMediaDuration();
+    $('playtimep').innerHTML = convertTime(playtime);
+    $('endtimep').innerHTML = convertTime(endtime);
+
+    //...........................
+    barcount = parseInt(endtime / 10, 10);
+    calculate(endtime, barcount);
+
+    //.......................................
+    currentBarIndex = focusWhichBar(playtime, barcount);
+    if (currentBarIndex > barcount) {
+        currentBarIndex = barcount;
+    }
+
+    //.......................................
+    barpercent = Math.floor(currentBarIndex / barcount * pointlength);
+    $("playtimep").style.left = (barpercent + 90) + "px";
+    $("progressBarDivp").innerHTML = '<div class="bar" style="width:' + (barpercent + 30) + 'px;"></div><div class="point" style="left:' + barpercent + 'px;"><div id="box0_0" class="item item_focus"></div></div>';
+    box0Doms[0] = $('box0_0'); //............
+}
+
+function showPlayEnd() {
+    pageType = "playEnd";
+    showPlayEndDIv();
+    endProcess();
+}
+
+function showPopupReturn() {
+    pageType = "popupReturn";
+    showPopupReturnDiv();
+    mp.pause();
+    if (progName) {
+        $('txtTitler').innerHTML = getCutedStr(progName, 26, true);
+    }
+}
+
+function process() {
+    playtime = mp.getCurrentPlayTime();
+    barpercent = Math.floor(playtime / endtime * pointlength);
+    $("playtime").innerHTML = convertTime(playtime);
+    $("playtime").style.left = (barpercent + 90) + "px";
+    $("progressBarDiv").innerHTML = '<div class="bar" style="width:' + (barpercent + 30) + 'px;"></div><div class="point" style="left:' + barpercent + 'px;"><div id="box0_0" class="item item_focus"></div></div>';
+    if (playtime <= 20 && trickmode == "fastrewind") {
+        if (time_process !== null) {
+            clearTimeout(time_process);
+        }
+        if (fwfrDivIsShow) {
+            hiddenffDiv();
+        }
+        pageType = "blank";
+    } else if (playtime >= (endtime - 20) && trickmode == "fastforward") {
+        if (time_process !== null) {
+            clearTimeout(time_process);
+        }
+        if (fwfrDivIsShow) {
+            hiddenffDiv();
+        }
+        pageType = "blank";
+    } else {
+        time_process = setTimeout(process, 1000);
+    }
+}
+
+function fastForward() {
+    if (speedindex >= 32 || trickmode == "fastrewind") {
+        speedindex = 1;
+        trickmode = "play";
+        mp.resume();
+        if (time_process !== null) {
+            clearTimeout(time_process);
+        }
+        if (fwfrDivIsShow) {
+            hiddenffDiv();
+        }
+        pageType = "blank";
+    } else {
+        speedindex = speedindex * 2;
+        trickmode = "fastforward";
+        mp.fastForward(speedindex);
+        $("speedindex").innerHTML = 'X' + speedindex;
+    }
+}
+
+function fastRewind() {
+    if (speedindex >= 32 || trickmode == "fastforward") {
+        speedindex = 1;
+        trickmode = "play";
+        mp.resume();
+        if (time_process !== null) {
+            clearTimeout(time_process);
+        }
+        if (fwfrDivIsShow) {
+            hiddenffDiv();
+        }
+        pageType = "blank";
+    } else {
+        speedindex = speedindex * 2;
+        trickmode = "fastrewind";
+        mp.fastRewind(-speedindex);
+        $("speedindex").innerHTML = 'X' + speedindex;
+    }
+}
+
+function goBlank() {
+    if (pageType == "pause") {
+        if (curBoxId == 1 && curBoxIndex < 2 && $('box1_txt' + curBoxIndex).innerHTML !== '') {
+            delInputTime();
+            return;
+        }
+    }
+    mp.resume();
+    if (time_process !== null) {
+        clearTimeout(time_process);
+    }
+    if (fwfrDivIsShow) {
+        hiddenffDiv();
+    } else if (pauseDivIsShow) {
+        hiddenPauseDiv();
+    } else if (popupReturnDivIsShow) {
+        hiddenPopupReturnDiv();
+    } else if (voiceDivIsShow) {
+        hiddenVoiceDiv();
+    }
+    initParam();
+}
+
+function pressLeft() {
+    if (curBoxId === 0) {
+        if (currentBarIndex - 1 >= 0) {
+            currentBarIndex -= 1;
+            playtime = Math.floor(timeList[currentBarIndex]);
+            barpercent = Math.floor(playtime / endtime * pointlength);
+            $("playtimep").innerHTML = convertTime(playtime);
+            $("playtimep").style.left = (barpercent + 90) + "px";
+            $("progressBarDivp").innerHTML = '<div class="bar" style="width:' + (barpercent + 30) + 'px;"></div><div class="point" style="left:' + barpercent + 'px;"><div id="box0_0" class="item item_focus"></div></div>';
+            // leftRightPlay(playtime);
+        }
+    } else if (curBoxId == 1) {
+        if (curBoxIndex > 0) {
+            box1Doms[curBoxIndex].className = 'item';
+            curBoxIndex -= 1;
+            box1Doms[curBoxIndex].className = 'item item_focus';
+        }
+    }
+}
+
+function pressRight() {
+    if (curBoxId === 0) {
+        if (currentBarIndex + 1 < timeList.length) {
+            currentBarIndex += 1;
+            playtime = Math.floor(timeList[currentBarIndex]);
+            barpercent = Math.floor(playtime / endtime * pointlength);
+            $("playtimep").innerHTML = convertTime(playtime);
+            $("playtimep").style.left = (barpercent + 90) + "px";
+            $("progressBarDivp").innerHTML = '<div class="bar" style="width:' + (barpercent + 30) + 'px;"></div><div class="point" style="left:' + barpercent + 'px;"><div id="box0_0" class="item item_focus"></div></div>';
+            // leftRightPlay(playtime);
+        }
+    } else if (curBoxId == 1) {
+        if (curBoxIndex < 3) {
+            box1Doms[curBoxIndex].className = 'item';
+            curBoxIndex += 1;
+            box1Doms[curBoxIndex].className = 'item item_focus';
+        }
+    }
+}
+
+function pressUp() {
+    if (curBoxId == 1) {
+        box1Doms[curBoxIndex].className = 'item';
+        curBoxId = 0;
+        box0Doms[0].className = 'item item_focus';
+    }
+}
+
+function pressDown() {
+    if (curBoxId === 0) {
+        box0Doms[0].className = 'item';
+        curBoxId = 1;
+        box1Doms[curBoxIndex].className = 'item item_focus';
+    }
+}
+
+function pauseOk() {
+    if (curBoxId == 1) {
+        if (curBoxIndex == 2) {
+            jump();
+        }
+        if (curBoxIndex == 3) {
+            $('box1_txt0').innerHTML = '';
+            $('box1_txt1').innerHTML = '';
+        }
+    } else if (curBoxId === 0) {
+        playByTime(playtime);
+    }
+}
+
+function playByTime(time) {
+    var tempTime = parseInt(time);
+    mp.playByTime(1, tempTime, 1);
+    playOrPause();
+}
+
+function jump() {
+    var minute = 0,
+        sec = 0,
+        strmin = $("box1_txt0").innerHTML,
+        strsec = $("box1_txt1").innerHTML;
+
+    if (strmin !== "") {
+        minute = parseInt(strmin, 10);
+    }
+
+    if (strsec !== "") {
+        sec = parseInt(strsec, 10);
+    }
+
+    if (isInMediaTime(minute, sec)) {
+        var seektime = minute * 60 + sec;
+        currentBarIndex = focusWhichBar(seektime, barcount);
+        if (currentBarIndex > barcount) {
+            currentBarIndex = barcount;
+        }
+        //.......................................
+        barpercent = Math.floor(currentBarIndex / barcount * pointlength);
+        $('progressBar').style.width = (barpercent + 30) + 'px';
+        $('progressPoint').style.left = barpercent + 'px';
+        $('playtime').style.left = (barpercent + 90) + 'px';
+        $('playtime').innerHTML = convertTime(seektime);
+        playByTime(seektime);
+    }
+}
+
+function leftRightPlay(curtime) {
+    mp.playByTime(1, parseInt(curtime), 1);
+    mp.resume();
+    if (time_process !== null) {
+        clearTimeout(time_process);
+    }
+    time_process = setTimeout(gobb, 8000);
+    if (time_processG !== null) {
+        clearTimeout(time_processG);
+    }
+    time_processG = setTimeout(processG, 1000);
+}
+
+function gobb() {
+    if (pauseDivIsShow) {
+        hiddenPauseDiv();
+    }
+    initParam();
+}
+
+function processG() {
+    playtime = mp.getCurrentPlayTime();
+    barpercent = Math.floor(playtime / endtime * pointlength);
+    $("playtime").innerHTML = convertTime(playtime);
+    $("playtime").style.left = (barpercent + 90) + "px";
+    $("progressBarDiv").innerHTML = '<div class="bar" style="width:' + (barpercent + 30) + 'px;"></div><div class="point" style="left:' + barpercent + 'px;"><div id="box0_0" class="item item_focus"></div></div>';
+    time_processG = setTimeout(processG, 1000);
+}
+
+function delInputTime() {
+    if (curBoxId == 1 && curBoxIndex < 2) {
+        var temphour = $('box1_txt' + curBoxIndex).innerHTML;
+        $('box1_txt' + curBoxIndex).innerHTML = temphour.substring(0, temphour.length - 1);
+    }
+}
+
+//...........................
+function showInputTime(num) {
+    if (curBoxId == 1 && curBoxIndex < 2) {
+        var bufInput = $('box1_txt' + curBoxIndex).innerHTML;
+        if (bufInput == ' ') {
+            bufInput = '';
+        } else if (bufInput.length < 2) {
+            $('box1_txt' + curBoxIndex).innerHTML = bufInput + num;
+            if (($('box1_txt' + curBoxIndex).innerHTML).length == 2) {
+                pressRight();
+            }
+        }
+    }
+}
+
+function playOrPause() {
+    mp.resume();
+    if (time_process !== null) {
+        clearTimeout(time_process);
+    }
+    if (pauseDivIsShow) {
+        hiddenPauseDiv();
+    }
+    initParam();
+}
+
+//.................................
+function isInMediaTime(minute, sec) {
+    if (sec >= 60) {
+        return false;
+    } else {
+        var value = parseInt(minute, 10) * 60 + parseInt(sec, 10);
+        return value <= endtime && value > 0;
+    }
+}
+
+function convertTime(time) {
+    var time_second,
+        time_min,
+        time_hour;
+    //0 is ok
+    if (time === null) {
+        time = mp.getMediaDuration();
+    }
+    time = parseInt(time, 10);
+    time_hour = Math.floor(time / 3600);
+    time_min = Math.floor(time % 3600 / 60);
+    time_second = time % 3600 % 60;
+    time_hour = time_hour < 10 ? "0" + time_hour : time_hour;
+    time_min = time_min < 10 ? "0" + time_min : time_min;
+    time_second = time_second < 10 ? "0" + time_second : time_second;
+    return time_hour + ":" + time_min + ":" + time_second;
+}
+
+function calculate(mediaPeriod, count) {
+    timeList = [];
+    if (mediaPeriod !== 0) {
+        var time_per_square = mediaPeriod / count;
+        for (var i = 0; i <= count; ++i) {
+            timeList[i] = i * time_per_square;
+        }
+    }
+}
+
+function focusWhichBar(time, count) {
+    var index = 0;
+    for (var i = 0; i <= count; ++i) {
+        if (parseInt(timeList[i], 10) - parseInt(time, 10) > 0) {
+            index = i;
+            break;
+        }
+    }
+    if (index === 0) {
+        return 0;
+    }
+    if ((parseInt(time, 10) - parseInt(timeList[index - 1], 10)) < (parseInt(timeList[index], 10) - parseInt(time, 10))) {
+        return (index - 1);
+    } else {
+        return index;
+    }
+}
+
+function endProcess() {
+    $('txtMitNum').innerHTML = mitNum + '..................';
+    if (mitNum === 0) {
+        if (time_process !== null) {
+            clearTimeout(time_process);
+        }
+        goBack();
+        return;
+    }
+    mitNum -= 1;
+    time_process = setTimeout(endProcess, 1000);
+}
+
+function returnOk() {
+    if (curBoxIndex === 0) {
+        goBlank();
+    } else if (curBoxIndex == 1) {
+        goBack();
+    }
+}
+
+function returnUp() {
+    if (curBoxIndex == 1) {
+        $('box2_' + curBoxIndex).className = 'txtbg01 item';
+        curBoxIndex = 0;
+        $('box2_' + curBoxIndex).className = 'txtbg01 item item_focus';
+    }
+}
+
+function returnDown() {
+    if (curBoxIndex === 0) {
+        $('box2_' + curBoxIndex).className = 'txtbg01 item';
+        curBoxIndex = 1;
+        $('box2_' + curBoxIndex).className = 'txtbg01 item item_focus';
+    }
+}
+
+function volumeUp() {
+    pageType = "voice";
+    showVoiceDiv();
+    if (time_process !== null) {
+        clearTimeout(time_process);
+    }
+    mp.setMuteFlag(0);
+    $("mutePic").src = "images/t.gif";
+    nowVolume = mp.getVolume();
+    nowVolume += perVolume;
+    if (nowVolume >= totalVolume) {
+        nowVolume = totalVolume;
+    }
+    mp.setVolume(nowVolume);
+    barpercent = Math.floor(nowVolume / totalVolume * pointlengthv);
+    $('processBar').style.width = (barpercent + 30) + 'px';
+    $('processPoint').style.left = barpercent + 'px';
+    mp.setVolume(nowVolume);
+    time_process = setTimeout(goBlank, 3000);
+}
+
+function volumeDown() {
+    pageType = "voice";
+    showVoiceDiv();
+    if (time_process !== null) {
+        clearTimeout(time_process);
+    }
+    nowVolume = mp.getVolume();
+    nowVolume -= perVolume;
+    if (nowVolume <= 0) {
+        nowVolume = 0; //.........0..................
+        mp.setMuteFlag(1);
+        $("mutePic").src = "images/btn-voice-disable.png";
+    }
+    barpercent = Math.floor(nowVolume / totalVolume * pointlengthv);
+    $('processBar').style.width = (barpercent + 30) + 'px';
+    $('processPoint').style.left = barpercent + 'px';
+    mp.setVolume(nowVolume);
+    time_process = setTimeout(goBlank, 3000);
+}
+
+function setMuteFlag() {
+    var muteFlag = mp.getMuteFlag();
+    if (muteFlag == 1) {
+        mp.setMuteFlag(0);
+        $("mutePic").src = "images/t.gif";
+    } else {
+        mp.setMuteFlag(1);
+        $("mutePic").src = "images/btn-voice-disable.png";
+    }
+}
+
+function showffDiv() {
+    $("playBoxDiv").style.display = "block";
+    $("fwfrDiv").style.display = "block";
+    fwfrDivIsShow = true;
+}
+
+function hiddenffDiv() {
+    $("fwfrDiv").style.display = "none";
+    $("playBoxDiv").style.display = "none";
+    fwfrDivIsShow = false;
+}
+
+function showPauseDiv() {
+    $("playBoxDiv").style.display = "block";
+    $("pauseDiv").style.display = "block";
+    pauseDivIsShow = true;
+}
+
+function hiddenPauseDiv() {
+    $("pauseDiv").style.display = "none";
+    $("playBoxDiv").style.display = "none";
+    pauseDivIsShow = false;
+}
+
+function showPlayEndDIv() {
+    $("playEndDiv").style.display = "block";
+    playEndDivIsShow = true;
+}
+
+function hiddenPlayEndDIv() {
+    $("playEndDiv").style.display = "none";
+    playEndDivIsShow = false;
+}
+
+function showPopupReturnDiv() {
+    $("popupReturnDiv").style.display = "block";
+    popupReturnDivIsShow = true;
+}
+
+function hiddenPopupReturnDiv() {
+    $("popupReturnDiv").style.display = "none";
+    popupReturnDivIsShow = false;
+}
+
+function showVoiceDiv() {
+    $("voiceDiv").style.display = "block";
+    voiceDivIsShow = true;
+}
+
+function hiddenVoiceDiv() {
+    $("voiceDiv").style.display = "none";
+    voiceDivIsShow = false;
+}
+
+function hiddenAllDiv() {
+    if (time_process !== null) {
+        clearTimeout(time_process);
+    }
+    hiddenffDiv();
+    hiddenPauseDiv();
+    hiddenPlayEndDIv();
+    hiddenPopupReturnDiv();
+    hiddenVoiceDiv();
+}
+
+function goUtility() {
+    eval("eventJson = " + Utility.getEvent());
+    var typeStr = eventJson.type;
+    switch (typeStr) {
+        case "EVENT_MEDIA_BEGINING":
+            initParam();
+            hiddenAllDiv();
+            break;
+        case "EVENT_MEDIA_ERROR":
+            break;
+        case "EVENT_MEDIA_END":
+            showPlayEnd();
+            break;
+        default:
+            return 1;
+    }
+    return 1;
+}
+
+var KEY_BACK = 8;
+var KEY_OK = 13;
+var KEY_PAGEUP = 33;
+var KEY_PAGEDOWN = 34;
+var KEY_LEFT = 37;
+var KEY_UP = 38;
+var KEY_RIGHT = 39;
+var KEY_DOWN = 40;
+
+var KEY_0 = 48;
+var KEY_1 = 49;
+var KEY_2 = 50;
+var KEY_3 = 51;
+var KEY_4 = 52;
+var KEY_5 = 53;
+var KEY_6 = 54;
+var KEY_7 = 55;
+var KEY_8 = 56;
+var KEY_9 = 57;
+
+var KEY_VOLUP = 259;
+var KEY_VOLDOWN = 260;
+var KEY_MUTE = 261;
+var KEY_EVENT = 768;
+var KEY_LOCATION = 271;
+var KEY_PLAYORPAUSE = 263;
+var KEY_FASTFORWARD = 264;
+var KEY_FASTREWIND = 265;
+
+document.onkeypress = keypress;
+
+function keypress() {
+    if (!isControl) {
+        return;
+    }
+    var keyval = event.which ? event.which : event.keyCode;
+    switch (keyval) {
+        case KEY_0:
+        case KEY_1:
+        case KEY_2:
+        case KEY_3:
+        case KEY_4:
+        case KEY_5:
+        case KEY_6:
+        case KEY_7:
+        case KEY_8:
+        case KEY_9:
+            if (pageType == "pause") {
+                showInputTime(keyval - KEY_0);
+            }
+            break;
+        case KEY_UP:
+            if (pageType == "pause") {
+                pressUp();
+            } else if (pageType == "popupReturn") {
+                returnUp();
+            }
+            break;
+        case KEY_DOWN:
+            if (pageType == "pause") {
+                pressDown();
+            } else if (pageType == "popupReturn") {
+                returnDown();
+            }
+            break;
+        case KEY_RIGHT:
+            if (pageType == "blank" || pageType == "voice") {
+                showFastforwardFastrewind("fastforward");
+            } else if (pageType == "forwardRewind") {
+                fastForward();
+            } else if (pageType == "pause") {
+                pressRight();
+            }
+            break;
+        case KEY_LEFT:
+            if (pageType == "blank" || pageType == "voice") {
+                showFastforwardFastrewind("fastrewind");
+            } else if (pageType == "forwardRewind") {
+                fastRewind();
+            } else if (pageType == "pause") {
+                pressLeft();
+            }
+            break;
+        case KEY_OK:
+            if (pageType == "blank" || pageType == "voice") {
+                showPause();
+            } else if (pageType == "forwardRewind") {
+                goBlank();
+            } else if (pageType == "pause") {
+                pauseOk();
+            } else if (pageType == "popupReturn") {
+                returnOk();
+            }
+            break;
+        case KEY_MUTE:
+            setMuteFlag();
+            break;
+        case KEY_VOLUP:
+            if (pageType == "blank" || pageType == "voice") {
+                volumeUp();
+            }
+            break;
+        case KEY_VOLDOWN:
+            if (pageType == "blank" || pageType == "voice") {
+                volumeDown();
+            }
+            break;
+        case KEY_PAGEUP:
+            if (pageType == "blank" || pageType == "voice") {
+                mp.gotoStart();
+            }
+            break;
+        case KEY_PAGEDOWN:
+            if (pageType == "blank" || pageType == "voice") {
+                mp.gotoEnd();
+            }
+            break;
+        case KEY_BACK:
+            if (pageType == "blank" || pageType == "voice") {
+                showPopupReturn();
+            } else if (pageType == "forwardRewind" || pageType == "popupReturn" || pageType == "pause") {
+                goBlank();
+            } else if (pageType == "playEnd") {
+                goBack();
+            }
+            break;
+        case KEY_FASTFORWARD:
+            if (pageType == "blank" || pageType == "voice") {
+                showFastforwardFastrewind("fastforward");
+            } else if (pageType == "forwardRewind") {
+                fastForward();
+            }
+            break;
+        case KEY_FASTREWIND:
+            if (pageType == "blank" || pageType == "voice") {
+                showFastforwardFastrewind("fastrewind");
+            } else if (pageType == "forwardRewind") {
+                fastRewind();
+            }
+            break;
+        case KEY_LOCATION:
+            if (pageType == "blank" || pageType == "voice") {
+                showPause();
+            }
+            break;
+        case KEY_PLAYORPAUSE:
+            if (pageType == "blank" || pageType == "voice") {
+                showPause();
+            } else if (pageType == "forwardRewind") {
+                goBlank();
+            } else if (pageType == "pause") {
+                playOrPause();
+            }
+            break;
+        case KEY_EVENT:
+            goUtility();
+            break;
+        default:
+            break;
+    }
+    return 0;
+}
+
+function $(id) {
+    return document.getElementById(id);
+}
+
+function completionZero(str, zeroStr) {
+    if (typeof str !== "string") {
+        str = str.toString();
+    }
+    return zeroStr.substring(0, zeroStr.length - str.length) + str;
+}
+
+function getQueryString(name, url) {
+    var _url = url || window.location;
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = _url.search.substr(1).match(reg);
+    if (r !== null) return unescape(r[2]);
+    return null;
+}
+
+function getCookie(name) {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    arr = document.cookie.match(reg);
+    if (arr) {
+        return unescape(arr[2]);
+    } else {
+        return null;
+    }
+}
+
+function getCutedStr(sSource, iLen, dot) {
+    if (!!sSource) {
+        if (sSource.constructor != String) {
+            sSource = sSource.toString();
+        }
+    } else {
+        return "";
+    }
+    var str = "";
+    var l = 0;
+    var schar = sSource.charAt(i);
+    for (var i = 0; schar;) {
+        l += (schar.match(/[^\x00-\xff]/) !== null ? 2 : 1);
+        if (schar === "W" || schar === "w" || schar === "m" || schar === "M") {
+            l = l + 1;
+        }
+        if (l > iLen) {
+            break;
+        }
+        str += schar;
+        i++;
+        schar = sSource.charAt(i);
+    }
+    if (!dot || str === "" || l <= iLen)
+        return str;
+    else
+        return str + "...";
+}
+</script>
+
+</html>

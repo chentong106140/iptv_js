@@ -1,0 +1,279 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+<link rel="stylesheet" href="../dist/css/swiper.css">
+<link rel="stylesheet" href="../dist/css/animate.css">
+<style type="text/css">
+
+    body,html{
+        background-color: #39005E;
+        width: 100%;
+        height: 100%;
+    }
+    *{
+        padding: 0px;
+        border:  0px;
+        margin:  0px;
+    }
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }  
+    .swiper-wrapper .swiper-slide
+    {
+
+        font-size: 36px;
+        font-weight:bolder;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+    }
+    .swiper-wrapper .swiper-slide:nth-of-type(1){
+        background-color:yellow;
+    }
+    .swiper-wrapper .swiper-slide:nth-of-type(2){
+        background-color: green;
+    }
+    .swiper-wrapper .swiper-slide:nth-of-type(3){
+        
+        background-color: red;
+    }
+    .swiper-wrapper .swiper-slide:nth-of-type(4){
+        background-color: #DA76BD;
+    }
+    .swiper-wrapper .swiper-slide:nth-of-type(5){
+        background-color: #F0E251;
+    }
+    .swiper-wrapper .swiper-slide:nth-of-type(6){
+        background-color: #E023DE;
+    }
+    /*修改swiper默认动画方式*/
+    .swiper-wrapper{
+       transition-timing-function: ease-out ;
+    }
+
+    /*自定义导航按钮*/
+    .swiper-button-next_ {
+        width: 32px; 
+        height: 47px; 
+        position: fixed; 
+        bottom:20px;
+        left: 48%; 
+        z-index: 500; 
+        border: 0;
+        cursor:pointer; 
+        background-image: null;
+    }
+    /*箭头朝下提示*/
+    .next-but-arraw { 
+        width: 200px; 
+        height:14px; 
+        margin: 0 auto; 
+        animation: up-fade 1s ease 0s infinite; 
+        -moz-animation: up-fade 1s ease 0s infinite; 
+        -ms-animation: up-fade 1s ease 0s infinite; 
+        -o-animation: up-fade 1s ease 0s infinite; 
+        -webkit-animation: up-fade 1s ease 0s infinite;
+    }
+
+
+
+    @keyframes up-fade {
+        0% { opacity: 1 }
+        100% { -webkit-transform: translate3d(0px, -6px, 0); opacity: 0.6 }
+    }
+    @-ms-keyframes up-fade {
+        0% { opacity: 1 }
+        100% { -webkit-transform: translate3d(0px, -6px, 0); opacity: 0.6 }
+    }
+    @-o-keyframes up-fade {
+        0% { opacity: 1 }
+        100% { -webkit-transform: translate3d(0px, -6px, 0); opacity: 0.6 }
+    }
+    @-moz-keyframes up-fade {
+        0% { opacity: 1 }
+        100% { -webkit-transform: translate3d(0px, -6px, 0); opacity: 0.6 }
+    }
+    @-webkit-keyframes up-fade {
+        0% { opacity: 1 }
+        100% { -webkit-transform: translate3d(0px, -6px, 0); opacity: 0.6 }
+    }
+</style>
+</head>
+
+<body>
+<div class="swiper-container"  >
+    <div class="swiper-wrapper">
+        <div class="swiper-slide">
+            Slide 1
+            <img data-src="image/1.png" height="161" width="248"  class="swiper-lazy" />
+            <div class="swiper-lazy-preloader"></div>
+        </div>
+        <div class="swiper-slide">
+            Slide 2
+            <img data-src="image/2.png" height="161" width="248" class="swiper-lazy" />
+            <div class="swiper-lazy-preloader"></div>
+        </div>
+        <div class="swiper-slide">
+               <div style="width:400px; height:300px; position:absolute; left:50%; top:50%;margin-left:-200px; margin-top:-150px; line-height:300px; border:1px solid black;background-image:linear-gradient(45deg, white 0px,rgba(255, 255, 255, 0) 100%)">
+                   线性
+               </div>
+        </div>
+        <div class="swiper-slide">
+            Slide 4
+            <img data-src="image/4.png" height="161" width="248" class="swiper-lazy " />
+            <div class="swiper-lazy-preloader"></div>
+        </div>
+        <div class="swiper-slide">
+            Slide 5
+            <img data-src="image/5.png" height="161" width="248" class="swiper-lazy" />
+            <div class="swiper-lazy-preloader"></div>
+        </div>
+        <div class="swiper-slide">
+            Slide 6
+            <img data-src="image/6.png" height="161" width="248" class="swiper-lazy" />
+            <div class="swiper-lazy-preloader"></div>
+        </div>
+    </div>
+    <!-- 如果需要分页器 -->
+    <div class="swiper-pagination"></div>
+    
+    <!-- 如果需要导航按钮 -->
+    <!--
+    <div class="swiper-button-prev"></div>
+    -->
+    <div class="swiper-button-next_">
+        <div class="next-but-arraw">
+            <img src="image/btn-next.png">
+        </div>
+    </div>
+    
+    <!-- 如果需要滚动条 -->
+    <div class="swiper-scrollbar"></div>
+</div>
+
+<script src="../dist/js/jquery-1.10.1.min.js"></script> 
+<script src="../dist/js/swiper.jquery.js"></script>
+
+<script type="text/javascript">
+$(function () {
+    //http://2017.miaov.com/v_show/1280
+    //http://www.swiper.com.cn/api/Images/2015/0308/213.html
+    //http://www.zhangxinxu.com/wordpress/2013/09/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3css3-gradient%E6%96%9C%E5%90%91%E7%BA%BF%E6%80%A7%E6%B8%90%E5%8F%98/
+    var mySwiper = new Swiper('.swiper-container', {
+    //var mySwiper = $('.swiper-container').swiper({
+        //自动滑动的时间间隔,不设置这个，就不会自动切换，
+        //可以在某个slide上设置单独的停留时间，例<div class="swiper-slide" data-swiper-autoplay="2000">
+        //用户操作后autoplay 默认停止自动切换
+        //autoplay: 2000,
+        //用户操作swiper之后，是否禁止autoplay。默认为true：停止。
+        autoplayDisableOnInteraction:false,
+        //如果设置为true，当切换到最后一个slide时停止自动切换。（loop模式下无效）。
+        autoplayStopOnLast : false,
+        //是否支持循环切换
+        loop:false,
+        // 如果需要分页器
+        pagination: '.swiper-pagination',
+        // 如果需要前进后退按钮
+        nextButton: '.swiper-button-next_',
+        //prevButton: '.swiper-button-prev',
+        // 如果需要滚动条
+        scrollbar: '.swiper-scrollbar',
+        //初始化默认落在哪个slide面板上
+        initialSlide :2,
+        //设置滑动方向，默认水平：horizontal，垂直vertical
+        direction : 'vertical',
+        //自动滑动的速度
+        speed:1000,
+        //设置为true时，鼠标覆盖Swiper时指针会变成手掌形状，拖   动时指针会变成抓手形状。
+        grabCursor : false,
+        //设置自动贴和容器，如果设置为true，那么在手动滑动的时候，slide不会自动贴和容器，显示不全
+        freeMode : false,
+        //设置为false后，slide面板会根据手动滑动的大小来显示面板，不会自动贴和容器，前提是freeMode为true
+        freeModeMomentum:false,
+        //同时显示多个slide面板
+        //slidesPerView : 3,
+        //设置面板居中
+        //centeredSlides:true,
+        //切换效果，默认效果是slide位移切换，fade:淡出切换
+        effect : 'fade',
+        //设置为true时，点击分页器的指示点分页器会控制Swiper切换。
+        paginationClickable :true,
+        //设置为true时，点击分页器，会消失
+        paginationHide :false,
+        //滚动条是否自动隐藏。默认：true会自动隐藏。
+        scrollbarHide:false,
+        //设为true开启图片延迟加载
+        //需要将图片img标签的src改写成data-src，并且增加类名swiper-lazy
+        //还可以为slide加一个预加载，<div class="swiper-lazy-preloader"></div>
+        lazyLoading : true,
+        //设置为true允许将延迟加载应用到最接近的slide的图片（前一个和后一个slide）。
+        lazyLoadingInPrevNext : true,
+        //回调函数，初始化后执行。
+        onInit:function(swiper)
+        {
+            console.log("初始化完成！"+swiper.activeIndex);
+        },
+        //只有滑动到另一个slide才会执行，如果只是在当前slide滑动，但是没有成功滑动到另一个，就不会执行
+        //swiper从当前slide开始过渡到另一个slide时执行
+        //过度之前调用
+        //使用分页组件切换，开始点击分页组件就立即执行该方法
+        //使用手势滑动，只有手离开屏幕时才立即执行
+        onSlideChangeStart:function(swiper)
+        {
+            //activeIndex为当前的索引
+            console.log("过度开始："+swiper.activeIndex);
+        },
+        //swiper从一个slide过渡到另一个slide结束时执行。
+        //是过度动画结束才调用
+        onSlideChangeEnd: function(swiper){
+            console.log("过度结束："+swiper.activeIndex); //切换结束时，告诉我现在是第几个slide
+        },
+        updateOnImagesReady:true,
+        //所有内置图像加载完成后执行，同时“updateOnImagesReady”需设置为“true’
+        onImagesReady: function(swiper){
+            console.log("图片加载完成："+swiper.activeIndex);
+        },
+        //只要被滑动就会执行，就算没有滑动到另一个slide也会有开始和结束
+        onTransitionStart: function(swiper){
+            console.log("onTransitionStart："+swiper.activeIndex);
+        },
+        onTransitionEnd: function(swiper){
+            console.log("onTransitionEnd:"+swiper.activeIndex);
+        },
+        //当你点击或轻触Swiper 300ms后执行。
+        onClick: function(swiper){
+            console.log("点击："+swiper.activeIndex);
+        },
+        //当你轻触(tap)Swiper后执行。在移动端，click会有 200~300 ms延迟，所以请用tap代替click作为点击事件。
+        onTap: function(swiper){
+            console.log("触摸："+swiper.activeIndex);
+        },
+        // /当你两次轻触Swiper 时执行，类似于双击。
+        // 双击的时候，onTap会执行2次
+        onDoubleTap: function(swiper){
+            console.log("双击："+swiper.activeIndex);
+        },
+        //图片延迟加载开始时执行。slide中每有一张图片被延迟加载就执行一次。接受Swiper实例，延迟加载的slide，延迟加载的img作为参数（可选）。
+        onLazyImageLoad: function(swiper, slide, image){
+          console.log('延迟加载图片');
+          console.log(swiper);//Swiper实例
+          console.log(slide);//哪个slide里面的图片在加载
+          console.log(image);//哪个图片在加载
+        },
+        //键盘方向键控制
+        keyboardControl : true,
+        //鼠标滚动控制
+        mousewheelControl:true,
+        onScroll: function(swiper){
+            console.log('您通过滚轮操作了swiper');
+        },
+
+    });
+});
+</script>
+</body>
+</html>
